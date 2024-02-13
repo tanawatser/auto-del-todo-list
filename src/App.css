@@ -1,30 +1,51 @@
-.content {
-  width: 100%;
+#container {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
   padding: 30px;
   margin: 20px;
-  border: 2px solid #000;
-  height: 70vh;
-}
-.box {
-  display: flex;
-  width: 100%;
-}
-.list {
-  width: 200px;
-  display: flex;
-  border: none;
-  padding: 20px;
-  margin: 20px;
-  font-size: 16px;
-  cursor: pointer;
-  font-weight: 800;
-}
-.list:hover {
-  background-color: green;
-  color: #fff;
+  gap: 16px;
 }
 
-.topic {
+.list {
+  display: grid;
+  gap: 20px;
+}
+
+.data {
+  padding: 15px;
+  font-size: 20px;
+  background-color: #fff;
+  border: 3px solid #f0f8f0;
+  width: 95%;
+}
+
+.data:hover {
+  background-color: #f9f9f9;
+  cursor: pointer;
+}
+.btn {
+  font-size: 20px;
+  background-color: #fff;
+  border: 3px solid #f0f8f0;
+  padding: 15px;
+
+}
+
+.btn:hover {
+  background-color: #f9f9f9;
+  cursor: pointer;
+}
+
+#container .card {
+  /* overflow: hidden; */
+  border: 3px solid #f0f8f0;
+  height: 90vh;
+}
+
+.header {
+  font-size: 20px;
+  padding: 10px;
+  font-weight: 600;
   text-align: center;
   background-color: #f0f8f0;
 }
