@@ -8,31 +8,38 @@ function App() {
   const [fruitList, setFruitList] = useState([]);
   const [vegetableList, setVegetableList] = useState([]);
   const [selectedItems, setSelectedItems] = useState([]);
+  const [total, setTotal] = useState([]);
 
   useEffect(() => {
     if (selectedItems.length > 0) {
       for (let i = selectedItems.length - 1; i >= 0; i--) {
-        const timeout = setTimeout(() => {
-          moveItemsToMainList(selectedItems[i]);
+        const timeout = setTimeout(
+          () => {
+            moveItemsToMainList(selectedItems[i]);
 
-          if (selectedItems[i].type === "Fruit") {
-            setFruitList((prevFruitList) =>
-              prevFruitList.filter((fruit) => fruit !== selectedItems[i])
+            if (selectedItems[i].type === "Fruit") {
+              setFruitList((prevFruitList) =>
+                prevFruitList.filter((fruit) => fruit !== selectedItems[i])
+              );
+            } else if (selectedItems[i].type === "Vegetable") {
+              setVegetableList((prevVegetableList) =>
+                prevVegetableList.filter(
+                  (vegetable) => vegetable !== selectedItems[i]
+                )
+              );
+            }
+  
+            setSelectedItems((prev) =>
+              prev.slice(0, i).concat(prev.slice(i + 1))
             );
-          } else if (selectedItems[i].type === "Vegetable") {
-            setVegetableList((prevVegetableList) =>
-              prevVegetableList.filter(
-                (vegetable) => vegetable !== selectedItems[i]
-              )
-            );
-          }
+          },
+          total.length - 1 === selectedItems.length - 1 ? 5000 : 1000
+        );
 
-          setSelectedItems((prev) =>
-            prev.slice(0, i).concat(prev.slice(i + 1))
-          );
-        }, (selectedItems.length - i) * 5000);
         return () => clearTimeout(timeout);
       }
+    } else {
+      setTotal([])
     }
   }, [selectedItems]);
 
@@ -42,6 +49,7 @@ function App() {
 
   const handleButtonClick = (item) => {
     if (item) {
+      setTotal((prev) => [...prev, item]);
       setSelectedItems((prev) => [...prev, item]);
     }
 
@@ -77,51 +85,51 @@ function App() {
   };
 
   return (
-
-      <div className="box">
-        <div className="content">
-          {mainList.map((item) => (
+    <section id="container">
+      <div className="first">
+        <div className="list">
+          {mainList.map((item, index) => (
             <button
-              key={item.name}
+              key={index}
               onClick={() => handleButtonClick(item)}
-              className="list"
+              className="data"
             >
               {item.name}
             </button>
           ))}
         </div>
+      </div>
 
-        <div className="box">
-          <div className="content">
-            <h2 className="topic">Fruit</h2>
-            {fruitList.map((item, index) => (
-              <button
-                key={index}
-                className="list"
-                onClick={() => removeFromColumn(item)}
-              >
-                {item.name}
-              </button>
-            ))}
-          </div>
-        </div>
-
-        <div className="box">
-          <div className="content">
-            <h2 className="topic">Vegetable</h2>
-            {vegetableList.map((item, index) => (
-              <button
-                key={index}
-                className="list"
-                onClick={() => removeFromColumn(item)}
-              >
-                {item.name}
-              </button>
-            ))}
-          </div>
+      <div className="card">
+        <div className="header">Fruit</div>
+        <div className="content">
+          {fruitList.map((item, index) => (
+            <button
+              key={index}
+              className="btn"
+              onClick={() => removeFromColumn(item)}
+            >
+              {item.name}
+            </button>
+          ))}
         </div>
       </div>
-    
+
+      <div className="card">
+        <div className="header">Vegetable</div>
+        <div className="content">
+          {vegetableList.map((item, index) => (
+            <button
+              key={index}
+              className="btn"
+              onClick={() => removeFromColumn(item)}
+            >
+              {item.name}
+            </button>
+          ))}
+        </div>
+      </div>
+    </section>
   );
 }
 

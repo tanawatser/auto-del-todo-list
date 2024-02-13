@@ -26,4 +26,11 @@
 
 .topic {
   text-align: center;
+  background-color: #f0f8f0;
+}
+
+.content {
+  display: grid;
+  gap: 20px;
+  margin: 20px;
 }
