@@ -8,38 +8,38 @@ function App() {
   const [fruitList, setFruitList] = useState([]);
   const [vegetableList, setVegetableList] = useState([]);
   const [selectedItems, setSelectedItems] = useState([]);
-  const [total, setTotal] = useState([]);
 
   useEffect(() => {
     if (selectedItems.length > 0) {
-      for (let i = selectedItems.length - 1; i >= 0; i--) {
+      const sortData = [
+        ...selectedItems.slice(selectedItems.length - 1),
+        selectedItems[0],
+      ];
+
+      for (let i = sortData.length - 1; i >= 0; i--) {
         const timeout = setTimeout(
           () => {
-            moveItemsToMainList(selectedItems[i]);
+            moveItemsToMainList(sortData[i]);
 
-            if (selectedItems[i].type === "Fruit") {
+            if (sortData[i].type === "Fruit") {
               setFruitList((prevFruitList) =>
-                prevFruitList.filter((fruit) => fruit !== selectedItems[i])
+                prevFruitList.filter((fruit) => fruit !== sortData[i])
               );
-            } else if (selectedItems[i].type === "Vegetable") {
+            } else if (sortData[i].type === "Vegetable") {
               setVegetableList((prevVegetableList) =>
                 prevVegetableList.filter(
-                  (vegetable) => vegetable !== selectedItems[i]
+                  (vegetable) => vegetable !== sortData[i]
                 )
               );
             }
-  
-            setSelectedItems((prev) =>
-              prev.slice(0, i).concat(prev.slice(i + 1))
-            );
+
+            setSelectedItems((prev) => prev.slice(1));
           },
-          total.length - 1 === selectedItems.length - 1 ? 5000 : 1000
+          sortData.length - 1 ? 1000 : null
         );
 
         return () => clearTimeout(timeout);
       }
-    } else {
-      setTotal([])
     }
   }, [selectedItems]);
 
@@ -49,7 +49,6 @@ function App() {
 
   const handleButtonClick = (item) => {
     if (item) {
-      setTotal((prev) => [...prev, item]);
       setSelectedItems((prev) => [...prev, item]);
     }
 
